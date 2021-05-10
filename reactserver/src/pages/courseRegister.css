@@ -1,0 +1,7 @@
+.courseList {
+    display: inline-grid;
+}
+
+.courseList td{
+    padding: 10px;
+}
