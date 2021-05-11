@@ -41,7 +41,7 @@ function App() {
         </Route>
         
         <Route path="/login">
-          <Login setStd={setStd}/>
+          <Login name={Std.name} setStd={setStd}/>
         </Route>
         
         <Route path="/registerCourse">

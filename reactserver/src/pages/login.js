@@ -1,13 +1,19 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 
-export default function Login({setStd}){
+export default function Login({name,setStd}){
 
     const [us, setUs] = React.useState('');
     const [pw, setPw] = React.useState('');
     const [showErr, setShowErr] = React.useState('none');
     const [redirect, setRedirect] = React.useState(false);
+
+    useEffect(()=>{
+        if((name !== undefined) && (name !== "")){
+            setRedirect(true);
+        }
+    }, [name])
 
     const checkLogin = useCallback(async(e)=>{
         e.preventDefault();
