@@ -3,13 +3,16 @@ import React, {useCallback} from 'react'
 import {Link} from 'react-router-dom'
 import "./nav.css"
 
-export default function Nav({name, setStd, ck}) {
+export default function Nav({name, setStd, ck, setTempSCL, setTempACL}) {
 
     const logout = useCallback(async() => {
-        await axios.post("http://localhost:80/logout", {withCredentials: true});
+        await axios.post("http://localhost:80/logout");
         ck.remove('id');
         setStd({name: "", id: ""});
-    }, [ck, setStd]);
+        setTempSCL({});
+        setTempACL({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <nav className="navbar">

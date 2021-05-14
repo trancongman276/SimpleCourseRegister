@@ -17,21 +17,24 @@ class SqlConn{
     login(id, callBack){
         this.conn.query(`call getStudent(${id})`,(err, result) => {
             if(err) throw err;
-            return callBack(result[0][0].StudentName);
+            return callBack(result[0][0]?.StudentName);
         });
     }
 
     getStudentCourse(id, callBack){
         this.conn.query(`call getStudentCourse(${id})`,(err, result) => {
-            if(err) throw err;
-            return callBack(result[0]);
+            var temp = {};
+            result[0].forEach((row)=>{temp[row.CourseID] = {"CourseName": row.CourseName}})
+            return callBack(temp);
         });
     }
     
     getCourseList(callBack){
         this.conn.query("call getAllCourses()",(err, result) => {
             if(err) throw err;
-            return callBack(result[0]);
+            var temp = {};
+            result[0].forEach((row)=>{temp[row.CourseID] = {"CourseName": row.CourseName}})
+            return callBack(temp);
         });
     }
 

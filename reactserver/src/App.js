@@ -1,4 +1,4 @@
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Nav from './components/nav';
 
@@ -9,45 +9,55 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Cookies from 'universal-cookie';
+import Page404 from './pages/Page404';
 const cookies = new Cookies();
 
 function App() {
   const [Std, setStd] = useState({name: "", id: ""});
-  console.log(cookies.get("id"))
+  const [tempStdCourse, setTempStdCourse] = useState({});
+  const [tempAllCourse, setTempAllCourse] = useState({});
+
   useEffect(()=>{
     (async()=>{
       const res = await axios({
         method: 'post',
         url: 'http://localhost:80/user',
-        headers: {
-          withCredentials: true
-        },
         data:{
           "id": cookies.get("id")
         }
       });
-      console.log(res.data);
       if (res.data !== "Error") setStd({name: res.data, id: cookies.get("id")});
     })();
   },[]);
 
   return (
     <div className="App">
+      
       <BrowserRouter>
-        <Nav name={Std.name} setStd={setStd} ck={cookies}/>
-        
-        <Route path="/" exact>
-          <HomePage Std={Std}/>
-        </Route>
-        
-        <Route path="/login">
-          <Login name={Std.name} setStd={setStd}/>
-        </Route>
-        
-        <Route path="/registerCourse">
-          <CourseRegister id={Std.id}/>
-        </Route>
-
+        <Nav name={Std.name} setStd={setStd} ck={cookies}
+          setTempSCL={setTempStdCourse} setTempACL={setTempAllCourse}
+        />
+        <Switch>
+          <Route path="/" exact>
+            <HomePage Std={Std} 
+            tempSCL={tempStdCourse} setTempSCL={setTempStdCourse}/>
+          </Route>
+          
+          <Route path="/login" exact>
+            <Login name={Std.name} setStd={setStd}/>
+          </Route>
+          
+          <Route path="/registerCourse">
+            <CourseRegister id={Std.id} 
+                tempSCL={tempStdCourse} setTempSCL={setTempStdCourse}
+                tempACL={tempAllCourse} setTempACL={setTempAllCourse}
+              />
+          </Route>
+          
+          <Route path="*">
+            <Page404/>
+          </Route>
+        </Switch>
       </BrowserRouter>
     </div>
   );

@@ -1,0 +1,11 @@
+form {
+    grid-gap: 10px;
+    display: inline-grid;
+    padding: 5vh;
+    grid-template-columns: auto;
+}
+
+form input[type=submit]{
+    padding: 10px;
+    margin: 10px;
+}
